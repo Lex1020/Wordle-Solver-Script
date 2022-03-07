@@ -10,7 +10,6 @@ if [ -f /home/$user/wordlewords ]; then
 		echo "Downloading file."
 		wget -q --show-progress https://raw.githubusercontent.com/tabatkins/wordle-list/main/words
 		mv words /home/$user/wordlewords
-		sort wordlewords
 		echo "Dictonary downloaded. Proceefing with program."
 		echo "=============================================="
 fi
