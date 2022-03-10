@@ -32,12 +32,12 @@ if [ $answer1 == Y ]; then
 	read Eletters
 	echo $Eletters >> /tmp/letters.txt
 	echo "Eliminated Letters"
-	tr -d '\n' < /tmp/letters.txt | tee /tmp/letters.txt
+	(tr -d "\n" </tmp/letters.txt ;echo) | tee /tmp/letters.txt
 	EL=$(cat /tmp/letters.txt)
 	grep -Evi "([$EL])" /tmp/wordleguesses.txt > /tmp/wordleguesses2.txt
 	mv /tmp/wordleguesses2.txt /tmp/wordleguesses.txt
 fi
-echo \n
+echo " "
 echo "Are there any letters you know exist, but not the place? (Y/N)"
 read answer
 if [ $answer == Y ]; then
