@@ -58,12 +58,12 @@ echo "Your Wordle suggestions are:"
 echo "============================================================="
 cat /tmp/wordleguesses.txt
 echo "============================================================="
-rm /tmp/wordleguesses*.txt /tmp/words 2>&1 1> /dev/null
+rm /tmp/wordleguesses*.txt /tmp/words > /dev/null 2>&1
 echo "Did you solve the word? (Y/N)"
 read solve
 if [ $solve == Y ]; then 
 	echo "Cleaning up."
-	rm /tmp/letters.txt 2>&1 1> /dev/null
+	rm /tmp/letters.txt > /dev/null 2>&1
 	elif [ $solve == N ]; then 
 	echo "Run script again."
 fi
