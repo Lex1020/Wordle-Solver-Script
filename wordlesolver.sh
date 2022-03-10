@@ -65,5 +65,7 @@ if [ $solve == Y ]; then
 	echo "Cleaning up."
 	rm /tmp/letters.txt > /dev/null 2>&1
 	elif [ $solve == N ]; then 
-	echo "Run script again."
+	clear
+	echo "Running script again."
+	./wordlesolver.sh
 fi
