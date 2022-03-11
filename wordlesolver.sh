@@ -1,5 +1,10 @@
 #!/bin/bash
 user=$(whoami)
+echo "Enter a Username:"
+read uname
+if [ -f /tmp/runcheck$uname ];  then
+	echo "Welcome back $uname. Resuming from where you left off."
+fi
 echo "Welcome to the Wordle Solver."
 echo "=========================================="
 echo "Checking Prerequisites. One moment."
@@ -25,47 +30,48 @@ echo "Please enter the range of your fifth letter."
 read letter5
 echo "Are there any letters you wish to eliminate? (Y/N)"
 read answer1
-grep -Ei "^([$letter1]{1}[$letter2]{1}[$letter3]{1}[$letter4]{1}[$letter5]{1})$" /home/$user/wordlewords > /tmp/wordleguesses.txt
-cp /tmp/wordleguesses.txt /tmp/wordleguesses2.txt
+grep -Ei "^([$letter1]{1}[$letter2]{1}[$letter3]{1}[$letter4]{1}[$letter5]{1})$" /home/$user/wordlewords > /tmp/wordleguesses$uname.txt
+cp /tmp/wordleguesses$uname.txt /tmp/wordleguesses2$uname.txt
 if [ $answer1 == Y ]; then
 	echo "Enter ther letters to eliminate."
 	read Eletters
-	echo $Eletters >> /tmp/letters.txt
+	echo $Eletters >> /tmp/letters$uname.txt
 	echo "Eliminated Letters"
-	(tr -d "\n" </tmp/letters.txt ;echo) | tee /tmp/letters.txt
-	EL=$(cat /tmp/letters.txt)
-	grep -Evi "([$EL])" /tmp/wordleguesses.txt > /tmp/wordleguesses2.txt
-	mv /tmp/wordleguesses2.txt /tmp/wordleguesses.txt
+	(tr -d "\n" </tmp/letters$uname.txt ;echo) | tee /tmp/letters$uname.txt
+	EL=$(cat /tmp/letters$uname.txt)
+	grep -Evi "([$EL])" /tmp/wordleguesses$uname.txt > /tmp/wordleguesses2$uname.txt
+	mv /tmp/wordleguesses2$uname.txt /tmp/wordleguesses$uname.txt
 fi
 echo " "
 echo "Are there any letters you know exist, but not the place? (Y/N)"
 read answer
 if [ $answer == Y ]; then
-	cp /tmp/wordleguesses.txt /tmp/words
+	cp /tmp/wordleguesses$uname.txt /tmp/words$uname
 	echo "How many letters? (Enter 1-5)"
 	read i
 	while [ $i -gt 0 ];
 		do 
 			echo "What is letter $i"
 			read letter
-			grep -Ei "([$letter])" /tmp/words >> /tmp/wordleguesses2.txt
-			mv /tmp/wordleguesses2.txt /tmp/words
-			cp /tmp/words /tmp/wordleguesses.txt
+			grep -Ei "([$letter])" /tmp/words$uname >> /tmp/wordleguesses2$uname.txt
+			mv /tmp/wordleguesses2.txt /tmp/words$uname
+			cp /tmp/words$uname /tmp/wordleguesses$uname.txt
 			((i--))
 		done
 fi
 echo "Your Wordle suggestions are:"
 echo "============================================================="
-cat /tmp/wordleguesses.txt
+cat /tmp/wordleguesses$uname.txt
 echo "============================================================="
-rm /tmp/wordleguesses*.txt /tmp/words > /dev/null 2>&1
+rm /tmp/wordleguesses*$uname.txt /tmp/words$uname > /dev/null 2>&1
 echo "Did you solve the word? (Y/N)"
 read solve
 if [ $solve == Y ]; then 
 	echo "Cleaning up."
-	rm /tmp/letters.txt > /dev/null 2>&1
+	rm /tmp/letters$uname.txt /tmp/runcheck$uname.txt > /dev/null 2>&1
 	elif [ $solve == N ]; then 
 	clear
 	echo "Running script again."
+	touch  /tmp/runcheck$uname.txt
 	./wordlesolver.sh
 fi
