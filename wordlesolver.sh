@@ -54,7 +54,7 @@ if [ $answer == Y ]; then
 			echo "What is letter $i"
 			read letter
 			grep -Ei "([$letter])" /tmp/words$uname >> /tmp/wordleguesses2$uname.txt
-			mv /tmp/wordleguesses2.txt /tmp/words$uname
+                        mv /tmp/wordleguesses2$uname.txt /tmp/words$uname
 			cp /tmp/words$uname /tmp/wordleguesses$uname.txt
 			((i--))
 		done
